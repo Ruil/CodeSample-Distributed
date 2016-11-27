@@ -1,0 +1,20 @@
+The code sample demonstrates a client-server framework by exploiting multiple cores/machines to support machine learning and data processing tasks (e.g., MapReduce).
+The client-server framework has two players: a master and a set of workers. 
+The master hands out jobs to workers and handles failures of workers via RPC (Remote Procedure Call). Asynchronous communications are provided between the master and workers. 
+
+We showed an example that one master manages 10 workers handling 30 first-phase jobs (e.g., Map) and 60 second-phase jobs (e.g., Reduce). The code sample can be extended to support parallelization approaches in machine learning, including but not limited to:
+1. Iteratively averaging parameters: run p learners on p workers in parallel and average their weight vectors on the master node.
+2. Asynchronous SGD: maintain a single weight vector and for p parallel learners to update it simultaneously.
+
+============= More Details ===============
+Master procedure (master.cpp):
+ 1. A master splits work into a number of jobs.
+ 2. A master registers a worker when a register RPC is received.
+ 3. A master thread/node hands out jobs to the workers via asynchronous call.
+ 4. A master waits for an available worker before it can hand out more jobs.
+
+Worker procedure (worker.cpp):
+ 1. When a worker starts, it sends a Register RPC to the master.
+ 2. If a job RPC is received, the worker (as an asynchronous server) will perform the computation (e.g., Map or Reduce), and send back the reply after the job is done.
+
+

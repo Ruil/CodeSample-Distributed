@@ -1,0 +1,35 @@
+
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "io.grpc.client_server";
+option java_outer_classname = "client_server";
+option objc_class_prefix = "HLW";
+
+package client_server;
+
+service Common {
+  rpc Register (RegisterRequest) returns (RegisterReply) {}
+  rpc DoJob (DoJobRequest) returns (DoJobReply) {}
+}
+
+message RegisterRequest {
+  string name = 1;
+}
+
+message RegisterReply {
+  string message = 1;
+}
+
+message DoJobRequest {
+  string file = 1;
+  string jobtype = 2;
+  int32 jobnumber = 3;
+  int32 numotherphase = 4;
+}
+
+message DoJobReply {
+  string message = 1;
+  string address = 2;
+  int32  jobnumber = 3;
+}
